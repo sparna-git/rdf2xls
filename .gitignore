@@ -1,0 +1,16 @@
+
+.project
+
+.settings/
+
+output.xls
+
+rdf2xls-app.log
+
+rdf2xls-lib/.classpath
+
+rdf2xls-lib/target/
+
+rdf2xls-app/target/
+
+rdf2xls-app/.classpath
