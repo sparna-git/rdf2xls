@@ -1,21 +1,21 @@
 # rdf2xls : seriaze RDF graphs into tabular Excel files
 
 
-## What is this ?
-
-This utility serializes an RDF graph file into different tabs of an Excel spreadsheet, based on a SHACL specification. The Excel file can be converted back to RDF using the [xls2rdf](https://xls2rdf.sparna.fr) utility.
+This utility _serializes an RDF graph file into an Excel spreadsheet, based on a SHACL specification_. The Excel file can be converted back to RDF using the [xls2rdf](https://xls2rdf.sparna.fr) utility.
 
 This tool aims at supporting the following workflow:
-	1. RDF data
-	2. Transform to Excel using rdf2xls
-	3. Human review or correction of the Excel file
-	4. Serialize back to RDF using rdf2xls
+
+1. RDF data
+2. Transform to Excel using rdf2xls
+3. Human review or correction of the Excel file
+4. Serialize back to RDF using rdf2xls
 
 In particular, it is used at [Sparna](https://sparna.fr) for the following task:
-	1. Analyze an RDF dataset using the [SHACL generation algorithm of SHACL Play](https://shacl-play.sparna.fr/play/generate#documentation), to produce a SHACL analysis of the dataset
-	2. Transform the SHACL profile into an Excel spreadsheet
-	3. Review, adjust as necessary, maybe to produce a [Sparnatural configuration file](https://docs.sparnatural.eu/SHACL-based-configuration.html)
-	4. Transform back into RDF
+
+1. Analyze an RDF dataset using the [SHACL generation algorithm of SHACL Play](https://shacl-play.sparna.fr/play/generate#documentation), to produce a SHACL analysis of the dataset
+2. Transform the SHACL profile into an Excel spreadsheet
+3. Review, adjust as necessary, maybe to produce a [Sparnatural configuration file](https://docs.sparnatural.eu/SHACL-based-configuration.html)
+4. Transform back into RDF
 
 
 ## Example
@@ -109,7 +109,7 @@ sset:ConceptShape_P6 sh:path skos:broader;
 
 Then the following Excel file is produced:
 
-![]()
+![](https://raw.githubusercontent.com/sparna-git/rdf2xls/refs/heads/main/examples/example-skos.png)
 
 Note how the structure of the Excel file, in particular the header line, matches with the [xls2rdf converter rules](https://xls2rdf.sparna.fr/rest/doc.html).
 
@@ -178,7 +178,13 @@ The converter supports `sh:targetClass`, `sh:targetSubjectsOf` and `sh:targetObj
 
 ### Property Shapes correspond to columns
 
-The first column of each tab always is always `URI` and contains the URI. Then each property shape of the NodeShape corresponds to one column. Columns are ordered based on `sh:order`. On each property shape, 3 lines are populated : `sh:name` gives the column human-readable title, `sh:description` gives a human-readable help message, and the technical header file for the xls2rdf converter is converted according to the constraints of the property shapes (see next section).
+- The first column of each tab always is always `URI` and contains the URI.
+- Then each property shape of the NodeShape corresponds to one column.
+- Columns are ordered based on `sh:order`.
+- On each property shape, 3 lines are populated :
+	- `sh:name` gives the column human-readable title
+	- `sh:description` gives a human-readable help message
+	- the [header row for the xls2rdf converter](https://xls2rdf.sparna.fr/rest/doc.html#sheet-body-processing) is converted according to the constraints of the property shapes (see next section).
 
 Given this input SHACL file:
 
@@ -204,6 +210,8 @@ ex:P2 sh:path foaf:lastName ;
 
 Then the following column headers will be generated:
 
+|            |                   |
+|------------|-------------------|
 |A given name|Like, a family name|
 |first name  | last name         |
 |foaf:firstName|foaf:lastName|
