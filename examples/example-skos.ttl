@@ -1,0 +1,17 @@
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex: <https://data.sparna.fr/example/rdf2xls-example#> .
+
+ex:concept_1 a skos:Concept ;
+	skos:prefLabel "first concept"@en;
+	skos:prefLabel "premier concept"@fr;
+	skos:altLabel "a synonym"@en, "another synonym"@en;
+	skos:scopeNote "une note d'utilisation"@fr;
+.
+
+ex:concept_1_1 a skos:Concept ;
+	skos:prefLabel "child concept"@en;
+	skos:prefLabel "concept enfant"@fr;
+	skos:altLabel "specific concept"@en;
+	skos:scopeNote "blah blah"@fr;
+	skos:broader ex:concept_1;
+.

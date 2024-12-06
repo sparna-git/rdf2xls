@@ -1,0 +1,59 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix skosxl: <http://www.w3.org/2008/05/skos-xl#> .
+@prefix sset: <https://data.sparna.fr/ontologies/skos-simple-excel-template#> .
+
+<https://data.sparna.fr/ontologies/skos-simple-excel-template#> a owl:Ontology;
+  rdfs:label "SKOS simple Excel template"@en;
+.
+
+sset:Concept a sh:NodeShape;
+  sh:targetClass skos:Concept;
+  rdfs:label "SKOS Concept"@en;
+  sh:order "1";
+  sh:property 
+    sset:ConceptShape_P1,
+    sset:ConceptShape_P2,
+    sset:ConceptShape_P3,
+    sset:ConceptShape_P4,
+    sset:ConceptShape_P5,
+    sset:ConceptShape_P6
+.
+
+sset:ConceptShape_P1 sh:path skos:prefLabel;
+  sh:name "label in english"@en;
+  sh:description "The label in english"@en;
+  sh:languageIn ("en");
+  sh:order "1" .
+
+sset:ConceptShape_P2 sh:path skos:prefLabel;
+  sh:name "label in french"@en;
+  sh:description "The label in French"@en;
+  sh:languageIn ("fr");
+  sh:order "2" .
+
+sset:ConceptShape_P3 sh:path skos:altLabel;
+  sh:name "synonyms @en"@en;
+  sh:description "Synonyms in English"@en;
+  sh:languageIn ("en");
+  sh:order "3" .
+
+sset:ConceptShape_P4 sh:path skos:altLabel;
+  sh:name "synonyms @fr"@en;
+  sh:description "Synonyms in French"@en;
+  sh:languageIn ("fr");
+  sh:order "4" .
+
+sset:ConceptShape_P5 sh:path skos:scopeNote;
+  sh:name "scope note"@en;
+  sh:description "Scope Note"@en;
+  sh:order "5" .
+
+sset:ConceptShape_P6 sh:path skos:broader;
+  sh:name "broader concept"@en;
+  sh:description "The broader concept"@en;
+  sh:order "6" .
