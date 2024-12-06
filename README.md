@@ -1,4 +1,4 @@
-# rdf2xls : seriaze RDF graphs into tabular Excel files
+# rdf2xls : serializze RDF graphs into tabular Excel files
 
 
 This utility _serializes an RDF graph file into an Excel spreadsheet, based on a SHACL specification_. The Excel file can be converted back to RDF using the [xls2rdf](https://xls2rdf.sparna.fr) utility.
