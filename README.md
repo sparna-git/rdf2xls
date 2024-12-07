@@ -1,21 +1,21 @@
 # rdf2xls : seriaze RDF graphs into tabular Excel files
 
 
-This utility _serializes an RDF graph file into an Excel spreadsheet, based on a SHACL specification_. The Excel file can be converted back to RDF using the [xls2rdf](https://xls2rdf.sparna.fr) utility.
+This utility _serializes an RDF graph file into an Excel spreadsheet, based on a SHACL specification_. The Excel file can be converted back to RDF using the [**xls2rdf**](https://xls2rdf.sparna.fr) utility.
 
 This tool aims at supporting the following workflow:
 
 1. RDF data
 2. Transform to Excel using rdf2xls
 3. Human review or correction of the Excel file
-4. Serialize back to RDF using rdf2xls
+4. Serialize back to RDF using [xls2rdf](https://xls2rdf.sparna.fr)
 
 In particular, it is used at [Sparna](https://sparna.fr) for the following task:
 
 1. Analyze an RDF dataset using the [SHACL generation algorithm of SHACL Play](https://shacl-play.sparna.fr/play/generate#documentation), to produce a SHACL analysis of the dataset
 2. Transform the SHACL profile into an Excel spreadsheet
 3. Review, adjust as necessary, maybe to produce a [Sparnatural configuration file](https://docs.sparnatural.eu/SHACL-based-configuration.html)
-4. Transform back into RDF
+4. Transform back into RDF using [xls2rdf](https://xls2rdf.sparna.fr)
 
 
 ## Example
@@ -214,7 +214,7 @@ Then the following column headers will be generated:
 |------------|-------------------|
 |A given name|Like, a family name|
 |first name  | last name         |
-|foaf:firstName|foaf:lastName|
+|`foaf:firstName`|`foaf:lastName`|
 
 ### Supported property shapes constraints
 
@@ -224,4 +224,52 @@ The following property shapes constraints are supported:
 - `sh:languageIn` turns into a [`xxxx@en` notation](https://xls2rdf.sparna.fr/rest/doc.html#generating-multilingual-values) on the header. Multiple values of `sh:languageIn` on the same property shape will produce multiple columns of the same predicate, each with a different language
 - If the `sh:path` of the property shape is an `sh:inversePath`, this will turn into a [`^xxx` notation](https://xls2rdf.sparna.fr/rest/doc.html#generating-skos-collection-with-object-to-subject-columns) on the header
 
-Lines are sorted according to the first property column (excluding the URI column)
+
+## Other serialization rules
+
+### Multiple values
+
+If more than value exist for a given subject for a given predicate and a given language or a given datatype, then:
+  - the values get concatenated with a comma `,`
+  - the header automatically gets a [`xxxx(separator=",")` parameter](https://xls2rdf.sparna.fr/rest/doc.html#generating-multiple-values)
+
+|            |                   |
+|------------|-------------------|
+|first name  | last name         |
+|`skos:prefLabel@en`|`skos:altLabel@en(separator=",")`|
+|document    | book, work, report|
+
+
+### Sort order
+
+Lines are sorted according to the URI column
+
+### Blank nodes
+
+Blank nodes are serialized in Turtle notation, `[ ... ]` so that they can be [converted back to RDF](https://xls2rdf.sparna.fr/rest/doc.html#blank-nodes-with).
+_Special case_ : rdf2xls forces the `sh:or` predicate to always use a blank node serialization inside the RDF list.
+
+### Lists
+
+RDF lists are serialized in Turtle notation, `(...)` so that they can be [converted back to RDF](https://xls2rdf.sparna.fr/rest/doc.html#rdf-lists-with)
+
+### When the datatype does not match the header
+
+It may happen that for a certain value, the datatype does not match the one declared in the header. In that case, the value is serialized in Turtle notation with its datatype, which will take precedence over the datatype declared in the header.
+
+|            |                   |
+|------------|-------------------|
+|the label   | the order         |
+|`rdfs:label@en`|`ex:order^^xsd:integer`|
+|first entry    | "1"^^xsd:int   |
+
+
+## Header part
+
+There is a [header section](https://xls2rdf.sparna.fr/rest/doc.html#sheet-header-processing) in the generated tabs. This header section is generated in the following way:
+
+1. If there is a single instance of `owl:Ontology`, use it
+1. Otherwise if there is a single instance of `dcat:Dataset`, use it
+1. Otherwise if there is a single instance of `skos:ConceptScheme`, use it
+1. Otherwise if the NodeShape has an `sh:targetClass`, use it
+1. Otherwise default to the NodeShape URI
