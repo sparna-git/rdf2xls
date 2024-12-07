@@ -1,4 +1,4 @@
-# rdf2xls : seriaze RDF graphs into tabular Excel files
+# rdf2xls : serialize RDF graphs into tabular Excel files
 
 
 This utility _serializes an RDF graph file into an Excel spreadsheet, based on a SHACL specification_. The Excel file can be converted back to RDF using the [**xls2rdf**](https://xls2rdf.sparna.fr) utility.
@@ -223,7 +223,6 @@ The following property shapes constraints are supported:
 - `sh:datatype` turns into a [`xxx^^xsd:integer` notation](https://xls2rdf.sparna.fr/rest/doc.html#generating-values-with-datatypes) on the header
 - `sh:languageIn` turns into a [`xxxx@en` notation](https://xls2rdf.sparna.fr/rest/doc.html#generating-multilingual-values) on the header. Multiple values of `sh:languageIn` on the same property shape will produce multiple columns of the same predicate, each with a different language
 - If the `sh:path` of the property shape is an `sh:inversePath`, this will turn into a [`^xxx` notation](https://xls2rdf.sparna.fr/rest/doc.html#generating-skos-collection-with-object-to-subject-columns) on the header
-
 
 ## Other serialization rules
 
